@@ -71,13 +71,13 @@ struct node *DeletionBST(struct node *root, int key)
         // Go to the right subtree
         root->right = DeletionBST(root->right, key); // Update the right pointer
     }
-    else if (root->left == NULL)
+    else if (root->left == NULL && root->data == key)
     {
         struct node *temp = root->right;
         free(root);
         return temp;
     }
-    else if (root->right == NULL)
+    else if (root->right == NULL && root->data == key)
     {
         struct node *temp = root->left;
         free(root);
@@ -99,19 +99,20 @@ struct node *DeletionBST(struct node *root, int key)
 int main()
 {
     // Creating a sample tree
-    struct node *p = createNode(20);
-    struct node *p1 = createNode(3);
-    struct node *p2 = createNode(28);
+    struct node *p = createNode(10);
+    struct node *p1 = createNode(5);
+    struct node *p2 = createNode(40);
     struct node *p3 = createNode(1);
-    struct node *p4 = createNode(4);
-    struct node *p5 = createNode(30);
+    struct node *p4 = createNode(7);
+    struct node *p5 = createNode(50);
+    struct node *p6 = createNode(21);
 
     /*
-        20
-        / \
-       3   28
-      / \   \
-     1   4   30
+           10
+        /       \
+        5         40
+      /   \     /    \
+     1     7   21      50
     */
 
     // Manually linking the nodes to form the tree
@@ -119,6 +120,7 @@ int main()
     p->right = p2;
     p1->left = p3;
     p1->right = p4;
+    p2->left = p6;
     p2->right = p5;
 
     // Display the tree before deletion
@@ -127,7 +129,7 @@ int main()
     printf("\n");
 
     // Delete node with value 28
-    DeletionBST(p, 3);
+    DeletionBST(p, 5);
 
     // Display the tree after deletion
     printf("In-order after deletion: ");
