@@ -12,7 +12,7 @@ int getHeight(struct node* n){
     if(n==NULL){
         return 0;
     }
-        return n->height;
+    return n->height;
 }
 
 struct node* createNode(int key){
