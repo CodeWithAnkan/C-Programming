@@ -101,7 +101,7 @@ int stackBottom(struct stack *ptr)
     }
     return ptr->arr[0];
 }
-int stackTop(struct stack *ptr)
+char stackTop(struct stack *ptr)
 {
     if (isEmpty(ptr))
     {
@@ -109,9 +109,26 @@ int stackTop(struct stack *ptr)
     }
     else
     {
-        printf("%d is at the top of the stack\n", ptr->arr[ptr->top]);
+        printf("%c is at the top of the stack\n", ptr->arr[ptr->top]);
     }
     return ptr->arr[0];
+}
+
+int match(char a, char b)
+{
+    if (a == '{' && b == '}')
+    {
+        return 1;
+    }
+    if (a == '(' && b == ')')
+    {
+        return 1;
+    }
+    if (a == '[' && b == ']')
+    {
+        return 1;
+    }
+    return 0;
 }
 
 int parenthesisMatching(char *exp)
@@ -120,19 +137,24 @@ int parenthesisMatching(char *exp)
     sp->size = strlen(exp);
     sp->top = -1;
     sp->arr = (char *)malloc(sp->size * sizeof(char));
+    char popped_ch;
     for (int i = 0; exp[i] != '\0'; i++)
     {
-        if (exp[i] == '(')
+        if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[')
         {
-            push(sp, '(');
+            push(sp, exp[i]);
         }
-        else if (exp[i] == ')')
+        else if (exp[i] == ')' || exp[i] == '}' || exp[i] == ']')
         {
             if (isEmpty(sp))
             {
                 return 0;
             }
-            pop(sp);
+            popped_ch = pop(sp);
+            if (!match(popped_ch, exp[i]))
+            {
+                return 0;
+            }
         }
     }
     if (isEmpty(sp))
@@ -151,10 +173,11 @@ int main()
     char *exp = "8)*(9";
     if (parenthesisMatching(exp))
     {
-        printf("The parenthesis is matching");
+        printf("The parenthesis is balanced");
     }
-    else {
-        printf("The parenthesis is not matching");
+    else
+    {
+        printf("The parenthesis is not balanced");
     }
 
     return 0;
